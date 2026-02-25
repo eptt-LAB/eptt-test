@@ -4,19 +4,18 @@
 <meta charset="UTF-8">
 <title>E.P.P.T 排泄姿勢心理研究所</title>
 
-<!-- 画像化ライブラリ -->
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
 body{
-  font-family:"Hiragino Kaku Gothic ProN",sans-serif;
   margin:0;
   padding:20px;
-  color:white;
-  text-align:center;
-  background:linear-gradient(135deg,#5a3e2b,#2a1a12,#7a4a2a);
+  color:#f5e6d3;
+  font-family:'Noto Serif JP',serif;
+  background:linear-gradient(135deg,#3b2618,#1c120c,#5c3a21);
   background-size:400% 400%;
-  animation:bgmove 8s infinite alternate;
+  animation:bgmove 10s infinite alternate;
 }
 
 @keyframes bgmove{
@@ -24,51 +23,100 @@ body{
   100%{background-position:100% 50%;}
 }
 
-h1{
-  text-shadow:0 0 15px #000;
+header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+header h1{
+  font-family:'DotGothic16',sans-serif;
+  font-size:26px;
   letter-spacing:3px;
+  margin:5px 0;
+}
+
+.lab-info{
+  font-size:12px;
+  opacity:0.7;
 }
 
 .question{
   background:rgba(255,255,255,0.05);
   padding:15px;
   border-radius:12px;
-  margin-bottom:20px;
+  margin-bottom:15px;
 }
 
 button{
-  padding:12px 25px;
-  margin-top:20px;
+  padding:10px 20px;
   border:none;
   border-radius:8px;
   background:#d2a679;
   cursor:pointer;
-  font-size:16px;
+  font-family:'DotGothic16',sans-serif;
 }
 
 button:hover{opacity:0.8;}
 
-.result{
-  margin-top:40px;
+#loading{
+  margin-top:30px;
+  text-align:center;
+}
+
+.progress{
+  width:100%;
+  height:10px;
+  background:#2b1a12;
+  border-radius:5px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:#d2a679;
+  transition:width 0.3s;
 }
 
 #resultCard{
+  margin-top:30px;
   padding:30px;
-  border-radius:20px;
   background:linear-gradient(135deg,#2b160c,#5c3a21);
+  border-radius:20px;
+  text-align:center;
+}
+
+.result-title{
+  font-family:'DotGothic16',sans-serif;
+  font-size:24px;
+}
+
+.poster-id{
+  font-size:12px;
+  opacity:0.6;
+  margin-top:10px;
 }
 </style>
 </head>
 <body>
 
-<h1>排泄姿勢心理研究所<br>E.P.P.T診断</h1>
+<header>
+<h1>排泄行動性格分析研究所</h1>
+<div class="lab-info">E.P.P.T Behavioral Analysis System - 2026</div>
+<div class="lab-info" id="subjectID"></div>
+</header>
 
 <form id="quiz"></form>
-<button onclick="calculate()">診断する</button>
+<button onclick="calculate()">解析開始</button>
 
-<div class="result" id="result"></div>
+<div id="loading"></div>
+<div id="result"></div>
 
 <script>
+
+document.getElementById("subjectID").innerText=
+"被験者ID: EP-"+Math.floor(Math.random()*999999);
 
 const types={
 "空間支配者":0,
@@ -82,41 +130,25 @@ const types={
 };
 
 const descriptions={
-"空間支配者":{
-text:"空間を制圧する強メンタル型。決断力が高くリーダー適性あり。圧があると言われがちだが成功確率は高い。"
-},
-"完全統制者":{
-text:"全てを管理したい完璧主義者。信頼されやすいが自分にも他人にも厳しい。"
-},
-"瞬間処理者":{
-text:"爆速実行型。迷う前に動く。衝動的だがチャンスを掴む力がある。"
-},
-"外界遮断者":{
-text:"一人の世界を作る没頭型。創造性が高く集中力に優れる。"
-},
-"過敏感応者":{
-text:"空気を読む達人。気遣いができるがストレスを溜めやすい。"
-},
-"回避内省者":{
-text:"思考潜行型。内面が豊かで哲学的。現実から一時距離を取る。"
-},
-"静観分析者":{
-text:"冷静で合理的。感情より論理を優先する安定タイプ。"
-},
-"解放自然体":{
-text:"自由人。ストレス耐性が高くマイペース。"
-}
+"空間支配者":"空間を制圧する強メンタル型。圧倒的決断力と行動力を持ち、組織の中心になりやすい。",
+"完全統制者":"緻密で管理能力が高い完璧主義者。責任感が強く信頼される。",
+"瞬間処理者":"爆速実行型。直感的に動き、チャンスを掴む。",
+"外界遮断者":"没頭型クリエイター。静かな環境で最大能力を発揮。",
+"過敏感応者":"空気を読む達人。共感力が非常に高い。",
+"回避内省者":"内面探究型。哲学的思考を持つ。",
+"静観分析者":"冷静沈着な合理主義者。",
+"解放自然体":"自由奔放でストレス耐性が高い。"
 };
 
 const questions=[
-["基本姿勢は？",["前傾で集中","完全統制者"],["すぐ終わらせる","瞬間処理者"],["もたれてリラックス","解放自然体"],["周囲を気にする","過敏感応者"]],
-["滞在時間は？",["1〜2分","瞬間処理者"],["3〜5分","静観分析者"],["5〜10分","回避内省者"],["長い","外界遮断者"]],
-["音は気になる？",["非常に","過敏感応者"],["少し","静観分析者"],["気にしない","空間支配者"],["全く","解放自然体"]],
-["スマホは？",["持ち込まない","完全統制者"],["少し見る","静観分析者"],["必ず持ち込む","回避内省者"],["触らない","空間支配者"]],
-["公共トイレは？",["避けたい","過敏感応者"],["仕方なく","回避内省者"],["どこでもOK","空間支配者"],["早く出たい","瞬間処理者"]],
-["便座温度は？",["必ず確認","完全統制者"],["少し気にする","静観分析者"],["気にしない","解放自然体"],["急いで座る","瞬間処理者"]],
-["トイレは？",["作業空間","外界遮断者"],["解放空間","解放自然体"],["任務空間","完全統制者"],["戦場","空間支配者"]],
-["終わった後は？",["すぐ出る","瞬間処理者"],["身だしなみ確認","過敏感応者"],["少し余韻","回避内省者"],["特に何もない","空間支配者"]]
+["基本姿勢は？",["前傾","完全統制者"],["速攻","瞬間処理者"],["リラックス","解放自然体"],["周囲確認","過敏感応者"]],
+["滞在時間は？",["短い","瞬間処理者"],["普通","静観分析者"],["長い","回避内省者"],["かなり長い","外界遮断者"]],
+["音は？",["気になる","過敏感応者"],["少し","静観分析者"],["気にしない","空間支配者"],["全く","解放自然体"]],
+["スマホは？",["持たない","完全統制者"],["少し","静観分析者"],["必須","回避内省者"],["不要","空間支配者"]],
+["公共トイレは？",["避けたい","過敏感応者"],["仕方なく","回避内省者"],["問題なし","空間支配者"],["即出る","瞬間処理者"]],
+["温度確認？",["必ず","完全統制者"],["少し","静観分析者"],["気にしない","解放自然体"],["急ぐ","瞬間処理者"]],
+["トイレは？",["作業場","外界遮断者"],["解放空間","解放自然体"],["任務","完全統制者"],["戦場","空間支配者"]],
+["終わった後？",["即退室","瞬間処理者"],["確認","過敏感応者"],["余韻","回避内省者"],["何も","空間支配者"]]
 ];
 
 const form=document.getElementById("quiz");
@@ -132,28 +164,37 @@ form.appendChild(div);
 });
 
 function calculate(){
-document.getElementById("result").innerHTML="<h2>🔬研究中...</h2><p>排泄姿勢データを解析しています...</p>";
 
-setTimeout(()=>{
+document.getElementById("loading").innerHTML=
+"<div id='loadingText'>解析中...</div><div class='progress'><div class='progress-bar' id='bar'></div></div>";
+
+let width=0;
+const interval=setInterval(()=>{
+width+=10;
+document.getElementById("bar").style.width=width+"%";
+if(width>=100){
+clearInterval(interval);
+showResult();
+}
+},200);
+}
+
+function showResult(){
 Object.keys(types).forEach(k=>types[k]=0);
-
 for(let i=0;i<questions.length;i++){
 const selected=document.querySelector(`input[name="q${i}"]:checked`);
 if(selected){types[selected.value]++;}
 }
-
 let result=Object.keys(types).reduce((a,b)=>types[a]>types[b]?a:b);
-const info=descriptions[result];
 
 document.getElementById("result").innerHTML=
 `<div id="resultCard">
-<h2>${result}</h2>
-<p>${info.text}</p>
-<p style="font-size:12px;">※本理論は実証研究に基づいていません。</p>
+<div class="result-title">${result}</div>
+<p>${descriptions[result]}</p>
+<div class="poster-id">E.P.P.T Official Analysis</div>
 </div>
 <button onclick="downloadImage()">画像保存</button>
 <button onclick="shareResult('${result}')">Xで共有</button>`;
-},2000);
 }
 
 function downloadImage(){
@@ -167,10 +208,10 @@ link.click();
 
 function shareResult(type){
 const text=`私は「${type}」タイプでした。`;
-const url=window.location.href;
-window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,"_blank");
+window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`,"_blank");
 }
 
 </script>
 </body>
 </html>
+
