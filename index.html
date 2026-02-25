@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>排泄行動性格分析研究所</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -14,37 +14,35 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background: linear-gradient(135deg, #141e30, #243b55);
   color: white;
-  overflow-x: hidden;
 }
 
 /* ヒーロー */
 .hero {
   text-align: center;
-  padding: 100px 20px;
+  padding: 120px 20px;
 }
 
 .hero h1 {
   font-size: 48px;
   font-weight: 900;
-  letter-spacing: 2px;
+  margin-bottom: 20px;
 }
 
 .hero p {
-  margin-top: 20px;
   font-size: 18px;
   opacity: 0.8;
 }
 
 .start-btn {
   margin-top: 40px;
-  padding: 15px 40px;
-  font-size: 18px;
+  padding: 18px 50px;
+  font-size: 20px;
   border-radius: 50px;
   border: none;
   background: white;
-  color: #2c5364;
+  color: #243b55;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
@@ -62,31 +60,60 @@ body {
 }
 
 .question {
-  font-size: 24px;
-  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 50px;
 }
 
+/* 🔥 巨大カードボタン */
 .option {
   display: block;
-  margin: 15px auto;
-  padding: 12px 30px;
-  width: 300px;
-  border-radius: 30px;
-  border: 1px solid white;
-  background: transparent;
-  color: white;
+  width: 92%;
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 40px 50px;
+
+  border-radius: 25px;
+  border: none;
+
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  color: #1c1c1c;
+
+  text-align: left;
   cursor: pointer;
-  transition: 0.3s;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,0.3),
+    inset 0 -4px 10px rgba(0,0,0,0.05);
+
+  transition: all 0.25s ease;
 }
 
 .option:hover {
-  background: white;
-  color: #2c5364;
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.4),
+    inset 0 -4px 10px rgba(0,0,0,0.05);
+}
+
+.option:active {
+  transform: scale(0.98);
+}
+
+.option small {
+  display: block;
+  font-size: 14px;
+  opacity: 0.5;
+  margin-bottom: 8px;
+}
+
+.option strong {
+  font-size: 26px;
 }
 
 /* ローディング */
 .loading {
-  font-size: 20px;
+  font-size: 22px;
   animation: pulse 1.5s infinite;
 }
 
@@ -99,28 +126,29 @@ body {
 /* 結果カード */
 .result-card {
   background: white;
-  color: #2c5364;
-  border-radius: 20px;
-  padding: 50px;
-  max-width: 600px;
+  color: #243b55;
+  border-radius: 25px;
+  padding: 60px;
+  max-width: 700px;
   margin: 0 auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  animation: fadeIn 1s ease;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+  animation: fadeIn 0.8s ease;
 }
 
 .result-type {
-  font-size: 40px;
+  font-size: 44px;
   font-weight: 900;
 }
 
 .result-desc {
-  margin-top: 20px;
-  font-family: 'Noto Serif JP', serif;
+  margin-top: 25px;
+  font-size: 18px;
+  line-height: 1.6;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px);}
-  to { opacity: 1; transform: translateY(0);}
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .footer {
@@ -135,15 +163,27 @@ body {
 
 <div class="hero" id="hero">
   <h1>排泄行動性格分析研究所</h1>
-  <p>あなたの“個室内行動”から本質的性格を解析します。</p>
+  <p>あなたの“個室行動”から本質を解析します。</p>
   <button class="start-btn" onclick="startTest()">診断を始める</button>
 </div>
 
 <div class="section" id="questionSection">
   <div class="question">個室に入ったら最初に何をしますか？</div>
-  <button class="option" onclick="analyze()">① すぐ座る</button>
-  <button class="option" onclick="analyze()">② 音姫を確認する</button>
-  <button class="option" onclick="analyze()">③ スマホを構える</button>
+
+  <button class="option" onclick="analyze()">
+    <small>即行動型</small>
+    <strong>A. すぐ座る</strong>
+  </button>
+
+  <button class="option" onclick="analyze()">
+    <small>警戒型</small>
+    <strong>B. 音姫を確認する</strong>
+  </button>
+
+  <button class="option" onclick="analyze()">
+    <small>情報依存型</small>
+    <strong>C. スマホを構える</strong>
+  </button>
 </div>
 
 <div class="section" id="loadingSection">
@@ -158,7 +198,7 @@ body {
     <div class="result-type">TSR-A</div>
     <div class="result-desc">
       あなたは慎重型個室支配者。<br>
-      周囲の環境を完全に把握してから行動する戦略家タイプです。
+      周囲を把握してから行動する戦略家タイプです。
     </div>
   </div>
 </div>
