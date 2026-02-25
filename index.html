@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>E.P.P.T 排泄姿勢性格診断</title>
+<style>
+body { font-family: sans-serif; background:#111; color:white; padding:20px; }
+h1 { text-align:center; }
+.question { margin-bottom:20px; }
+button { padding:10px 20px; margin-top:20px; }
+.result { margin-top:30px; font-size:20px; }
+</style>
+</head>
+<body>
+
+<h1>E.P.P.T 排泄姿勢性格診断</h1>
+
+<form id="quiz"></form>
+<button onclick="calculate()">診断する</button>
+
+<div class="result" id="result"></div>
+
+<script>
+const types = {
+  "空間支配者":0,
+  "完全統制者":0,
+  "瞬間処理者":0,
+  "外界遮断者":0,
+  "過敏感応者":0,
+  "回避内省者":0,
+  "静観分析者":0,
+  "解放自然体":0
+};
+
+const questions = [
+["基本姿勢は？",["前傾で集中","完全統制者"],["すぐ終わらせる","瞬間処理者"],["もたれてリラックス","解放自然体"],["周囲を気にする","過敏感応者"]],
+["滞在時間は？",["1〜2分","瞬間処理者"],["3〜5分","静観分析者"],["5〜10分","回避内省者"],["長い","外界遮断者"]],
+["音は気になる？",["非常に","過敏感応者"],["少し","静観分析者"],["気にしない","空間支配者"],["全く","解放自然体"]],
+["スマホは？",["持ち込まない","完全統制者"],["少し見る","静観分析者"],["必ず持ち込む","回避内省者"],["触らない","空間支配者"]],
+["公共トイレは？",["避けたい","過敏感応者"],["仕方なく","回避内省者"],["どこでもOK","空間支配者"],["早く出たい","瞬間処理者"]],
+["便座温度は？",["必ず確認","完全統制者"],["少し気にする","静観分析者"],["気にしない","解放自然体"],["急いで座る","瞬間処理者"]],
+["トイレは？",["作業空間","外界遮断者"],["解放空間","解放自然体"],["任務空間","完全統制者"],["戦場","空間支配者"]],
+["終わった後は？",["すぐ出る","瞬間処理者"],["身だしなみ確認","過敏感応者"],["少し余韻","回避内省者"],["特に何もない","空間支配者"]]
+];
+
+const form = document.getElementById("quiz");
+
+questions.forEach((q,i)=>{
+  const div = document.createElement("div");
+  div.className="question";
+  div.innerHTML = "<p>"+(i+1)+". "+q[0]+"</p>";
+  q.slice(1).forEach(opt=>{
+    div.innerHTML += `<label><input type="radio" name="q${i}" value="${opt[1]}"> ${opt[0]}</label><br>`;
+  });
+  form.appendChild(div);
+});
+
+function calculate(){
+  Object.keys(types).forEach(k=>types[k]=0);
+  for(let i=0;i<questions.length;i++){
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if(selected){ types[selected.value]++; }
+  }
+  let result = Object.keys(types).reduce((a,b)=>types[a]>types[b]?a:b);
+  document.getElementById("result").innerHTML = "あなたは <b>"+result+"</b> タイプです。<br>※本理論は実証研究に基づいていません。";
+}
+</script>
+
+</body>
+</html>
