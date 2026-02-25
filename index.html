@@ -2,216 +2,187 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>E.P.P.T 排泄姿勢心理研究所</title>
-
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<title>排泄行動性格分析研究所</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
 
 <style>
-body{
-  margin:0;
-  padding:20px;
-  color:#f5e6d3;
-  font-family:'Noto Serif JP',serif;
-  background:linear-gradient(135deg,#3b2618,#1c120c,#5c3a21);
-  background-size:400% 400%;
-  animation:bgmove 10s infinite alternate;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@keyframes bgmove{
-  0%{background-position:0% 50%;}
-  100%{background-position:100% 50%;}
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  overflow-x: hidden;
 }
 
-header{
-  text-align:center;
-  margin-bottom:20px;
+/* ヒーロー */
+.hero {
+  text-align: center;
+  padding: 100px 20px;
 }
 
-header h1{
-  font-family:'DotGothic16',sans-serif;
-  font-size:26px;
-  letter-spacing:3px;
-  margin:5px 0;
+.hero h1 {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: 2px;
 }
 
-.lab-info{
-  font-size:12px;
-  opacity:0.7;
+.hero p {
+  margin-top: 20px;
+  font-size: 18px;
+  opacity: 0.8;
 }
 
-.question{
-  background:rgba(255,255,255,0.05);
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:15px;
+.start-btn {
+  margin-top: 40px;
+  padding: 15px 40px;
+  font-size: 18px;
+  border-radius: 50px;
+  border: none;
+  background: white;
+  color: #2c5364;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-button{
-  padding:10px 20px;
-  border:none;
-  border-radius:8px;
-  background:#d2a679;
-  cursor:pointer;
-  font-family:'DotGothic16',sans-serif;
+.start-btn:hover {
+  transform: scale(1.05);
 }
 
-button:hover{opacity:0.8;}
-
-#loading{
-  margin-top:30px;
-  text-align:center;
+/* セクション */
+.section {
+  padding: 80px 20px;
+  text-align: center;
+  display: none;
 }
 
-.progress{
-  width:100%;
-  height:10px;
-  background:#2b1a12;
-  border-radius:5px;
-  overflow:hidden;
-  margin-top:10px;
+.question {
+  font-size: 24px;
+  margin-bottom: 30px;
 }
 
-.progress-bar{
-  height:100%;
-  width:0%;
-  background:#d2a679;
-  transition:width 0.3s;
+.option {
+  display: block;
+  margin: 15px auto;
+  padding: 12px 30px;
+  width: 300px;
+  border-radius: 30px;
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-#resultCard{
-  margin-top:30px;
-  padding:30px;
-  background:linear-gradient(135deg,#2b160c,#5c3a21);
-  border-radius:20px;
-  text-align:center;
+.option:hover {
+  background: white;
+  color: #2c5364;
 }
 
-.result-title{
-  font-family:'DotGothic16',sans-serif;
-  font-size:24px;
+/* ローディング */
+.loading {
+  font-size: 20px;
+  animation: pulse 1.5s infinite;
 }
 
-.poster-id{
-  font-size:12px;
-  opacity:0.6;
-  margin-top:10px;
+@keyframes pulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+/* 結果カード */
+.result-card {
+  background: white;
+  color: #2c5364;
+  border-radius: 20px;
+  padding: 50px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: fadeIn 1s ease;
+}
+
+.result-type {
+  font-size: 40px;
+  font-weight: 900;
+}
+
+.result-desc {
+  margin-top: 20px;
+  font-family: 'Noto Serif JP', serif;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.footer {
+  text-align: center;
+  padding: 40px;
+  font-size: 14px;
+  opacity: 0.6;
 }
 </style>
 </head>
 <body>
 
-<header>
-<h1>排泄行動性格分析研究所</h1>
-<div class="lab-info">E.P.P.T Behavioral Analysis System - 2026</div>
-<div class="lab-info" id="subjectID"></div>
-</header>
+<div class="hero" id="hero">
+  <h1>排泄行動性格分析研究所</h1>
+  <p>あなたの“個室内行動”から本質的性格を解析します。</p>
+  <button class="start-btn" onclick="startTest()">診断を始める</button>
+</div>
 
-<form id="quiz"></form>
-<button onclick="calculate()">解析開始</button>
+<div class="section" id="questionSection">
+  <div class="question">個室に入ったら最初に何をしますか？</div>
+  <button class="option" onclick="analyze()">① すぐ座る</button>
+  <button class="option" onclick="analyze()">② 音姫を確認する</button>
+  <button class="option" onclick="analyze()">③ スマホを構える</button>
+</div>
 
-<div id="loading"></div>
-<div id="result"></div>
+<div class="section" id="loadingSection">
+  <div class="loading">
+    研究中…<br>
+    精神構造を解析しています…
+  </div>
+</div>
+
+<div class="section" id="resultSection">
+  <div class="result-card">
+    <div class="result-type">TSR-A</div>
+    <div class="result-desc">
+      あなたは慎重型個室支配者。<br>
+      周囲の環境を完全に把握してから行動する戦略家タイプです。
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  © 2026 排泄行動性格分析研究所
+</div>
 
 <script>
-
-document.getElementById("subjectID").innerText=
-"被験者ID: EP-"+Math.floor(Math.random()*999999);
-
-const types={
-"空間支配者":0,
-"完全統制者":0,
-"瞬間処理者":0,
-"外界遮断者":0,
-"過敏感応者":0,
-"回避内省者":0,
-"静観分析者":0,
-"解放自然体":0
-};
-
-const descriptions={
-"空間支配者":"空間を制圧する強メンタル型。圧倒的決断力と行動力を持ち、組織の中心になりやすい。",
-"完全統制者":"緻密で管理能力が高い完璧主義者。責任感が強く信頼される。",
-"瞬間処理者":"爆速実行型。直感的に動き、チャンスを掴む。",
-"外界遮断者":"没頭型クリエイター。静かな環境で最大能力を発揮。",
-"過敏感応者":"空気を読む達人。共感力が非常に高い。",
-"回避内省者":"内面探究型。哲学的思考を持つ。",
-"静観分析者":"冷静沈着な合理主義者。",
-"解放自然体":"自由奔放でストレス耐性が高い。"
-};
-
-const questions=[
-["基本姿勢は？",["前傾","完全統制者"],["速攻","瞬間処理者"],["リラックス","解放自然体"],["周囲確認","過敏感応者"]],
-["滞在時間は？",["短い","瞬間処理者"],["普通","静観分析者"],["長い","回避内省者"],["かなり長い","外界遮断者"]],
-["音は？",["気になる","過敏感応者"],["少し","静観分析者"],["気にしない","空間支配者"],["全く","解放自然体"]],
-["スマホは？",["持たない","完全統制者"],["少し","静観分析者"],["必須","回避内省者"],["不要","空間支配者"]],
-["公共トイレは？",["避けたい","過敏感応者"],["仕方なく","回避内省者"],["問題なし","空間支配者"],["即出る","瞬間処理者"]],
-["温度確認？",["必ず","完全統制者"],["少し","静観分析者"],["気にしない","解放自然体"],["急ぐ","瞬間処理者"]],
-["トイレは？",["作業場","外界遮断者"],["解放空間","解放自然体"],["任務","完全統制者"],["戦場","空間支配者"]],
-["終わった後？",["即退室","瞬間処理者"],["確認","過敏感応者"],["余韻","回避内省者"],["何も","空間支配者"]]
-];
-
-const form=document.getElementById("quiz");
-
-questions.forEach((q,i)=>{
-const div=document.createElement("div");
-div.className="question";
-div.innerHTML="<p>"+(i+1)+". "+q[0]+"</p>";
-q.slice(1).forEach(opt=>{
-div.innerHTML+=`<label><input type="radio" name="q${i}" value="${opt[1]}"> ${opt[0]}</label><br>`;
-});
-form.appendChild(div);
-});
-
-function calculate(){
-
-document.getElementById("loading").innerHTML=
-"<div id='loadingText'>解析中...</div><div class='progress'><div class='progress-bar' id='bar'></div></div>";
-
-let width=0;
-const interval=setInterval(()=>{
-width+=10;
-document.getElementById("bar").style.width=width+"%";
-if(width>=100){
-clearInterval(interval);
-showResult();
-}
-},200);
+function startTest() {
+  document.getElementById("hero").style.display = "none";
+  document.getElementById("questionSection").style.display = "block";
 }
 
-function showResult(){
-Object.keys(types).forEach(k=>types[k]=0);
-for(let i=0;i<questions.length;i++){
-const selected=document.querySelector(`input[name="q${i}"]:checked`);
-if(selected){types[selected.value]++;}
-}
-let result=Object.keys(types).reduce((a,b)=>types[a]>types[b]?a:b);
+function analyze() {
+  document.getElementById("questionSection").style.display = "none";
+  document.getElementById("loadingSection").style.display = "block";
 
-document.getElementById("result").innerHTML=
-`<div id="resultCard">
-<div class="result-title">${result}</div>
-<p>${descriptions[result]}</p>
-<div class="poster-id">E.P.P.T Official Analysis</div>
-</div>
-<button onclick="downloadImage()">画像保存</button>
-<button onclick="shareResult('${result}')">Xで共有</button>`;
+  setTimeout(function(){
+    document.getElementById("loadingSection").style.display = "none";
+    document.getElementById("resultSection").style.display = "block";
+  }, 2500);
 }
-
-function downloadImage(){
-html2canvas(document.getElementById("resultCard")).then(canvas=>{
-const link=document.createElement("a");
-link.download="eptt_result.png";
-link.href=canvas.toDataURL();
-link.click();
-});
-}
-
-function shareResult(type){
-const text=`私は「${type}」タイプでした。`;
-window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`,"_blank");
-}
-
 </script>
+
 </body>
 </html>
-
