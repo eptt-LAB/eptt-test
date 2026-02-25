@@ -6,222 +6,192 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(135deg,#141e30,#243b55);
+  color:white;
+}
+.section{
+  padding:80px 20px;
+  text-align:center;
+}
+.hidden{display:none;}
+
+.question{
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:40px;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #141e30, #243b55);
-  color: white;
+.option{
+  display:block;
+  width:92%;
+  max-width:800px;
+  margin:25px auto;
+  padding:35px 45px;
+  border-radius:25px;
+  border:none;
+  background:linear-gradient(145deg,#ffffff,#f0f0f0);
+  color:#1c1c1c;
+  text-align:left;
+  cursor:pointer;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+  transition:all 0.25s ease;
 }
 
-/* ヒーロー */
-.hero {
-  text-align: center;
-  padding: 120px 20px;
+.option:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 25px 60px rgba(0,0,0,0.4);
 }
 
-.hero h1 {
-  font-size: 48px;
-  font-weight: 900;
-  margin-bottom: 20px;
+.result-card{
+  background:white;
+  color:#243b55;
+  border-radius:25px;
+  padding:60px;
+  max-width:700px;
+  margin:0 auto;
+  box-shadow:0 25px 70px rgba(0,0,0,0.4);
 }
 
-.hero p {
-  font-size: 18px;
-  opacity: 0.8;
+.result-type{
+  font-size:42px;
+  font-weight:900;
 }
 
-.start-btn {
-  margin-top: 40px;
-  padding: 18px 50px;
-  font-size: 20px;
-  border-radius: 50px;
-  border: none;
-  background: white;
-  color: #243b55;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.start-btn:hover {
-  transform: scale(1.05);
-}
-
-/* セクション */
-.section {
-  padding: 80px 20px;
-  text-align: center;
-  display: none;
-}
-
-.question {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 50px;
-}
-
-/* 🔥 巨大カードボタン */
-.option {
-  display: block;
-  width: 92%;
-  max-width: 800px;
-  margin: 30px auto;
-  padding: 40px 50px;
-
-  border-radius: 25px;
-  border: none;
-
-  background: linear-gradient(145deg, #ffffff, #f0f0f0);
-  color: #1c1c1c;
-
-  text-align: left;
-  cursor: pointer;
-
-  box-shadow:
-    0 15px 40px rgba(0,0,0,0.3),
-    inset 0 -4px 10px rgba(0,0,0,0.05);
-
-  transition: all 0.25s ease;
-}
-
-.option:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow:
-    0 25px 60px rgba(0,0,0,0.4),
-    inset 0 -4px 10px rgba(0,0,0,0.05);
-}
-
-.option:active {
-  transform: scale(0.98);
-}
-
-.option small {
-  display: block;
-  font-size: 14px;
-  opacity: 0.5;
-  margin-bottom: 8px;
-}
-
-.option strong {
-  font-size: 26px;
-}
-
-/* ローディング */
-.loading {
-  font-size: 22px;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 0.3; }
-  50% { opacity: 1; }
-  100% { opacity: 0.3; }
-}
-
-/* 結果カード */
-.result-card {
-  background: white;
-  color: #243b55;
-  border-radius: 25px;
-  padding: 60px;
-  max-width: 700px;
-  margin: 0 auto;
-  box-shadow: 0 25px 70px rgba(0,0,0,0.4);
-  animation: fadeIn 0.8s ease;
-}
-
-.result-type {
-  font-size: 44px;
-  font-weight: 900;
-}
-
-.result-desc {
-  margin-top: 25px;
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.footer {
-  text-align: center;
-  padding: 40px;
-  font-size: 14px;
-  opacity: 0.6;
+.progress{
+  margin-bottom:30px;
+  opacity:0.6;
 }
 </style>
 </head>
 <body>
 
-<div class="hero" id="hero">
-  <h1>排泄行動性格分析研究所</h1>
-  <p>あなたの“個室行動”から本質を解析します。</p>
-  <button class="start-btn" onclick="startTest()">診断を始める</button>
+<div class="section" id="quiz">
+
+  <div class="progress" id="progress"></div>
+  <div class="question" id="questionText"></div>
+  <div id="options"></div>
+
 </div>
 
-<div class="section" id="questionSection">
-  <div class="question">個室に入ったら最初に何をしますか？</div>
-
-  <button class="option" onclick="analyze()">
-    <small>即行動型</small>
-    <strong>A. すぐ座る</strong>
-  </button>
-
-  <button class="option" onclick="analyze()">
-    <small>警戒型</small>
-    <strong>B. 音姫を確認する</strong>
-  </button>
-
-  <button class="option" onclick="analyze()">
-    <small>情報依存型</small>
-    <strong>C. スマホを構える</strong>
-  </button>
-</div>
-
-<div class="section" id="loadingSection">
-  <div class="loading">
-    研究中…<br>
-    精神構造を解析しています…
-  </div>
-</div>
-
-<div class="section" id="resultSection">
+<div class="section hidden" id="resultSection">
   <div class="result-card">
-    <div class="result-type">TSR-A</div>
-    <div class="result-desc">
-      あなたは慎重型個室支配者。<br>
-      周囲を把握してから行動する戦略家タイプです。
-    </div>
+    <div class="result-type" id="resultType"></div>
+    <div id="resultDesc"></div>
   </div>
-</div>
-
-<div class="footer">
-  © 2026 排泄行動性格分析研究所
 </div>
 
 <script>
-function startTest() {
-  document.getElementById("hero").style.display = "none";
-  document.getElementById("questionSection").style.display = "block";
+
+const questions = [
+  {
+    text: "個室に入った瞬間の行動は？",
+    options: [
+      { text: "すぐ座る", type: "A" },
+      { text: "鍵を確認する", type: "B" },
+      { text: "スマホを見る", type: "C" }
+    ]
+  },
+  {
+    text: "滞在時間は？",
+    options: [
+      { text: "最短で出る", type: "A" },
+      { text: "平均的", type: "B" },
+      { text: "長居する", type: "C" }
+    ]
+  },
+  {
+    text: "物音がしたら？",
+    options: [
+      { text: "気にしない", type: "A" },
+      { text: "少し警戒", type: "B" },
+      { text: "完全停止", type: "C" }
+    ]
+  },
+  {
+    text: "退出時の行動は？",
+    options: [
+      { text: "即退室", type: "A" },
+      { text: "身だしなみ確認", type: "B" },
+      { text: "誰もいないか確認", type: "C" }
+    ]
+  },
+  {
+    text: "あなたは本質的に？",
+    options: [
+      { text: "合理主義", type: "A" },
+      { text: "慎重派", type: "B" },
+      { text: "内省型", type: "C" }
+    ]
+  }
+];
+
+let currentQuestion = 0;
+let scores = { A:0, B:0, C:0 };
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  document.getElementById("questionText").textContent = q.text;
+  document.getElementById("progress").textContent =
+    `質問 ${currentQuestion+1} / ${questions.length}`;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach(option => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = option.text;
+    btn.onclick = () => selectOption(option.type);
+    optionsDiv.appendChild(btn);
+  });
 }
 
-function analyze() {
-  document.getElementById("questionSection").style.display = "none";
-  document.getElementById("loadingSection").style.display = "block";
+function selectOption(type) {
+  scores[type]++;
+  currentQuestion++;
 
-  setTimeout(function(){
-    document.getElementById("loadingSection").style.display = "none";
-    document.getElementById("resultSection").style.display = "block";
-  }, 2500);
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
 }
+
+function showResult() {
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("resultSection").classList.remove("hidden");
+
+  const maxType = Object.keys(scores).reduce((a,b)=>
+    scores[a] > scores[b] ? a : b
+  );
+
+  const resultMap = {
+    A: {
+      title: "TSR-A 即断実行型",
+      desc: "あなたは合理的で無駄を嫌う実行者タイプ。"
+    },
+    B: {
+      title: "TSR-B 戦略観察型",
+      desc: "状況を把握しながら動く慎重な戦略家。"
+    },
+    C: {
+      title: "TSR-C 内省探求型",
+      desc: "深く考え、自分の世界に没入する思索家。"
+    }
+  };
+
+  document.getElementById("resultType").textContent =
+    resultMap[maxType].title;
+
+  document.getElementById("resultDesc").textContent =
+    resultMap[maxType].desc;
+}
+
+showQuestion();
+
 </script>
 
 </body>
