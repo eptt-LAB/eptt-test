@@ -11,22 +11,38 @@ body{
   background:linear-gradient(135deg,#141e30,#243b55);
   color:white;
 }
+
+/* 🔥 上部タイトル */
+.header{
+  text-align:center;
+  padding:30px 20px;
+  font-size:34px;
+  font-weight:900;
+  letter-spacing:3px;
+  background:rgba(0,0,0,0.3);
+  backdrop-filter:blur(10px);
+}
+
 .section{
   padding:60px 20px;
   max-width:900px;
   margin:auto;
 }
+
 .hidden{display:none;}
+
 .progress{
   margin-bottom:20px;
   opacity:0.7;
 }
+
 .bar{
   height:8px;
   background:#ffffff33;
   border-radius:10px;
   margin-top:10px;
 }
+
 .fill{
   height:8px;
   background:white;
@@ -34,10 +50,12 @@ body{
   width:0%;
   transition:0.3s;
 }
+
 .question{
   font-size:24px;
   margin:40px 0;
 }
+
 .option{
   display:block;
   width:100%;
@@ -51,22 +69,30 @@ body{
   color:#1c1c1c;
   transition:0.25s;
 }
+
 .option:hover{
   transform:scale(1.02);
 }
+
 .result{
   background:white;
   color:#243b55;
   padding:50px;
   border-radius:20px;
 }
+
 .type{
-  font-size:40px;
+  font-size:42px;
   font-weight:900;
+  margin-bottom:20px;
 }
 </style>
 </head>
 <body>
+
+<div class="header">
+  排泄行動性格分析研究所
+</div>
 
 <div class="section" id="quiz">
   <div class="progress">
@@ -87,126 +113,96 @@ body{
 <script>
 
 const questions = [
-{
-text:"個室に入った瞬間、最初にすることは？",
-options:[
-{text:"すぐ座る",type:"T"},
-{text:"鍵を二回確認する",type:"S"},
-{text:"スマホを取り出す",type:"C"},
-{text:"便座の状態をチェック",type:"R"}
-]},
-{
-text:"滞在時間の傾向は？",
-options:[
-{text:"最短で出る",type:"T"},
-{text:"平均的",type:"R"},
-{text:"わりと長い",type:"C"},
-{text:"状況で変わる",type:"S"}
-]},
-{
-text:"物音が聞こえたら？",
-options:[
-{text:"気にしない",type:"T"},
-{text:"少し警戒する",type:"S"},
-{text:"完全に動きを止める",type:"C"},
-{text:"様子をうかがう",type:"R"}
-]},
-{
-text:"列ができていたら？",
-options:[
-{text:"気にせず入る",type:"T"},
-{text:"急いで出る",type:"A"},
-{text:"プレッシャーを感じる",type:"E"},
-{text:"冷静に処理する",type:"R"}
-]},
-{
-text:"トラブル時の反応は？",
-options:[
-{text:"即対応",type:"T"},
-{text:"原因分析",type:"R"},
-{text:"焦る",type:"E"},
-{text:"静観する",type:"S"}
-]},
-{
-text:"普段の性格は？",
-options:[
-{text:"合理主義",type:"R"},
-{text:"感情派",type:"E"},
-{text:"慎重派",type:"S"},
-{text:"即断型",type:"T"}
-]},
-{
-text:"人間関係では？",
-options:[
-{text:"主導する",type:"A"},
-{text:"合わせる",type:"P"},
-{text:"観察する",type:"C"},
-{text:"盛り上げる",type:"O"}
-]},
-{
-text:"一人時間は？",
-options:[
-{text:"必須",type:"C"},
-{text:"あれば嬉しい",type:"S"},
-{text:"なくても平気",type:"O"},
-{text:"基本不要",type:"A"}
-]},
-{
-text:"決断の速さは？",
-options:[
-{text:"即決",type:"T"},
-{text:"熟考型",type:"S"},
-{text:"論理重視",type:"R"},
-{text:"直感重視",type:"E"}
-]},
-{
-text:"疲れたときは？",
-options:[
-{text:"黙る",type:"C"},
-{text:"誰かと話す",type:"O"},
-{text:"効率を考える",type:"R"},
-{text:"衝動的になる",type:"E"}
-]},
-{
-text:"空間へのこだわりは？",
-options:[
-{text:"ほぼない",type:"T"},
-{text:"清潔さ重視",type:"S"},
-{text:"快適性重視",type:"C"},
-{text:"機能性重視",type:"R"}
-]},
-{
-text:"プレッシャー下では？",
-options:[
-{text:"加速する",type:"T"},
-{text:"慎重になる",type:"S"},
-{text:"緊張する",type:"E"},
-{text:"冷静分析",type:"R"}
-]},
-{
-text:"あなたは？",
-options:[
-{text:"支配型",type:"A"},
-{text:"調整型",type:"P"},
-{text:"内省型",type:"C"},
-{text:"外向型",type:"O"}
-]},
-{
-text:"目標への姿勢は？",
-options:[
-{text:"一直線",type:"T"},
-{text:"戦略的",type:"R"},
-{text:"共感重視",type:"E"},
-{text:"状況適応",type:"P"}
-]},
-{
-text:"最も近いのは？",
-options:[
-{text:"即断実行",type:"T"},
-{text:"戦略観察",type:"S"},
-{text:"内省探求",type:"C"},
-{text:"主導統率",type:"A"}
-]}
+{ text:"個室に入った瞬間、最初にすることは？",
+  options:[
+  {text:"すぐ座る",type:"T"},
+  {text:"鍵を二回確認",type:"S"},
+  {text:"スマホ確認",type:"C"},
+  {text:"便座チェック",type:"R"}]},
+{ text:"滞在時間は？",
+  options:[
+  {text:"最短",type:"T"},
+  {text:"平均",type:"R"},
+  {text:"長め",type:"C"},
+  {text:"状況次第",type:"S"}]},
+{ text:"物音がしたら？",
+  options:[
+  {text:"気にしない",type:"T"},
+  {text:"警戒",type:"S"},
+  {text:"停止",type:"C"},
+  {text:"分析",type:"R"}]},
+{ text:"列ができていたら？",
+  options:[
+  {text:"無視",type:"T"},
+  {text:"焦る",type:"E"},
+  {text:"冷静",type:"R"},
+  {text:"慎重",type:"S"}]},
+{ text:"トラブル時は？",
+  options:[
+  {text:"即対応",type:"T"},
+  {text:"共感優先",type:"E"},
+  {text:"論理優先",type:"R"},
+  {text:"様子見",type:"S"}]},
+{ text:"あなたは？",
+  options:[
+  {text:"合理主義",type:"R"},
+  {text:"感情派",type:"E"},
+  {text:"主導型",type:"A"},
+  {text:"受動型",type:"P"}]},
+{ text:"一人時間は？",
+  options:[
+  {text:"必須",type:"C"},
+  {text:"不要",type:"O"},
+  {text:"まあ必要",type:"S"},
+  {text:"時々",type:"P"}]},
+{ text:"決断は？",
+  options:[
+  {text:"即決",type:"T"},
+  {text:"熟考",type:"S"},
+  {text:"直感",type:"E"},
+  {text:"分析",type:"R"}]},
+{ text:"休日は？",
+  options:[
+  {text:"外出",type:"O"},
+  {text:"家",type:"C"},
+  {text:"計画的",type:"R"},
+  {text:"衝動的",type:"E"}]},
+{ text:"人間関係は？",
+  options:[
+  {text:"主導",type:"A"},
+  {text:"合わせる",type:"P"},
+  {text:"観察",type:"C"},
+  {text:"盛り上げ",type:"O"}]},
+{ text:"プレッシャー下では？",
+  options:[
+  {text:"加速",type:"T"},
+  {text:"緊張",type:"E"},
+  {text:"分析",type:"R"},
+  {text:"慎重",type:"S"}]},
+{ text:"整理整頓は？",
+  options:[
+  {text:"完璧",type:"R"},
+  {text:"気分次第",type:"E"},
+  {text:"最低限",type:"T"},
+  {text:"無頓着",type:"P"}]},
+{ text:"集団では？",
+  options:[
+  {text:"目立つ",type:"O"},
+  {text:"静か",type:"C"},
+  {text:"仕切る",type:"A"},
+  {text:"流れる",type:"P"}]},
+{ text:"安心するのは？",
+  options:[
+  {text:"一人",type:"C"},
+  {text:"仲間",type:"O"},
+  {text:"計画",type:"R"},
+  {text:"感情共有",type:"E"}]},
+{ text:"最も近いのは？",
+  options:[
+  {text:"即断",type:"T"},
+  {text:"慎重",type:"S"},
+  {text:"主導",type:"A"},
+  {text:"内省",type:"C"}]}
 ];
 
 let index=0;
@@ -216,7 +212,7 @@ function showQuestion(){
 document.getElementById("progressText").innerText=
 `質問 ${index+1} / ${questions.length}`;
 document.getElementById("progressFill").style.width=
-((index)/questions.length)*100+"%";
+(index/questions.length)*100+"%";
 
 const q=questions[index];
 document.getElementById("questionText").innerText=q.text;
@@ -253,9 +249,18 @@ const type=
 (scores.A>=scores.P?"A":"P")+
 (scores.C>=scores.O?"C":"O");
 
+const descriptions={
+"TRAC":"あなたは完全合理支配型。パン派で朝は絶対トースト。LINEの返信は平均3分以内。",
+"TSAC":"あなたは慎重統率型。実はシリアル派。新商品を見ると必ず裏面の成分表を読むタイプ。",
+"SRPC":"あなたは超内省調整型。カフェでは必ず端の席。無意識に観葉植物を育て始めます。",
+"TRPO":"あなたは衝動外交型。突然海外旅行を予約しがち。だいたいクロワッサン派。"
+};
+
 document.getElementById("typeText").innerText=type;
+
 document.getElementById("descText").innerText=
-"あなたは独自の個室戦略を持つ高度分析型タイプです。";
+descriptions[type] || 
+"あなたは独特すぎる希少タイプ。おそらくパンより米派ですが、実は深夜にアイスを食べる傾向があります。";
 }
 
 showQuestion();
